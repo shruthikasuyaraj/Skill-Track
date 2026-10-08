@@ -23,13 +23,13 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        value: https://skilltrack.web.onrender.com,https://skilltrack-web.onrender.com
+        value: https://skilltrack-web-bwxq.onrender.com
       - key: GEMINI_API_KEY
         sync: false
       - key: FRONTEND_URL
-        value: https://skilltrack.web.onrender.com
+        value: https://skilltrack-web-bwxq.onrender.com
       - key: PUBLIC_BASE_URL
-        value: https://skilltrack.web.onrender.com
+        value: https://skilltrack-web-bwxq.onrender.com
 
   - type: web
     name: skilltrack-web
@@ -39,7 +39,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://skilltrack-api-5vwx.onrender.com
+        value: https://skilltrack-api-4527.onrender.com
     routes:
       - type: rewrite
         source: /*
