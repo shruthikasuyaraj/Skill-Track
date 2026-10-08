@@ -17,24 +17,10 @@ Base.metadata.create_all(engine)
 def _run_migrations() -> None:
     """Run database migrations on startup."""
     try:
-        # Import and run the migration script
-        from pathlib import Path
-        migrate_path = Path(__file__).parent.parent / "migrate_db.py"
-        if migrate_path.exists():
-            print("Running database migrations on startup...")
-            import importlib.util
-            spec = importlib.util.spec_from_file_location("migrate_db", migrate_path)
-            if spec is None or spec.loader is None:
-                print("Could not load migration spec, skipping migrations")
-                return
-            migrate_module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(migrate_module)
-            migrate_module.run_migration()
-        else:
-            print("Migration script not found, skipping migrations")
+        import migrate_db
+        migrate_db.run_migration()
     except Exception as e:
         print(f"Migration warning: {e}")
-        # Don't fail startup if migrations fail - app might still work
 
 
 def _add_missing_columns() -> None:
@@ -98,7 +84,10 @@ def _complete_finished_enrollments() -> None:
 
 
 _run_migrations()
-_complete_finished_enrollments()
+try:
+    _complete_finished_enrollments()
+except Exception as e:
+    print(f"Startup repair warning (non-fatal): {e}")
 
 app = FastAPI(title="SkillTrack API")
 app.add_middleware(
